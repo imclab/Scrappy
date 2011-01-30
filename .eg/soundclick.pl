@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use lib 'C:\Git Files\alnewkirk.com\public\code.scrappy\lib';
 
 use Scrappy;
 our $spidy = Scrappy->new;

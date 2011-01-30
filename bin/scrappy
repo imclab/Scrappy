@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+
+use Scrappy::Console;
+
+=head1 NAME
+
+scrappy - An interactive console for Scrappy
+
+=cut
+
+shell();
+
+=head1 AUTHOR
+
+Al Newkirk, C<< <awncorp at cpan.org> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2009 Al Newkirk, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut

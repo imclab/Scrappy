@@ -21,7 +21,7 @@ Scrappy (pronounced Scrap+Pee) == 'Scraper Happy' or 'Happy Scraper'; If you
 like you may call it Scrapy (pronounced Scrape+Pee) although Python has a web
 scraping framework by that name and this module is not a port of that one.
 
-=head1 BASIC USAGE
+=head1 BASIC DSL USAGE
 
     #!/usr/bin/perl
     use Scrappy qw/:syntax/;
@@ -34,7 +34,7 @@ scraping framework by that name and this module is not a port of that one.
     }
     
     # the list function deferences, list == @{...}
-    print $_->{name}, "\n" for list var->{modules};
+    print $_->{name}, "\n" for list var 'modules';
 
 =head1 ADVANCED USAGE
 
