@@ -34,7 +34,7 @@ sub template {
     my $content;
 
     $file = "templates/" . $file;
-    $file = -e "share/$file" ? "share/$file" : dist_file('Scrappy', "share/$file");
+    $file = -e "share/$file" ? "share/$file" : dist_file('Scrappy', "$file");
 
     $t->process($file, {'s' => $stash}, \$content);
 

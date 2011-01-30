@@ -1,3 +1,4 @@
+#ABSTRACT: Scrappy Console Command Base Class
 package Scrappy::Console::Command;
 
 use strict;

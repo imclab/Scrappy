@@ -1,4 +1,4 @@
-#ABSTRACT: Help documentation for the Scrappy Console
+#ABSTRACT: Help Documentation For The Scrappy Console
 package Scrappy::Console::Command::HelpMenu;
 
 use warnings;
