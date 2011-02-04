@@ -4,8 +4,8 @@ package Scrappy::Console;
 use 5.006;
 use warnings;
 use strict;
-use App::Rad;
 use Scrappy::Console::Util;
+use Scrappy::Console::Support;
 use Scrappy::Console::Command::HelpMenu;
 
 BEGIN {
@@ -37,7 +37,7 @@ An interactive console for Scrappy
 sub shell {
     App::Rad->shell({
         title      => [<DATA>],
-        prompt     => 's',
+        prompt     => 'S',
         autocomp   => 1,
         abbrev     => 1,
         ignorecase => 0,
@@ -49,72 +49,28 @@ sub main::setup {
     
     my $c = shift;
        $c->stash->{commands} = $c->{_commands};
-       
-    my $m = [
-            {
-                name => 'help',
-                code => sub {
-                    my $c = shift;
-                    my $u = Scrappy::Console::Util->new;
-                    my $h = Scrappy::Console::Command::HelpMenu->new;
-                    
-                    # display help document for a specific function
-                    if (defined $c->argv->[0]) {
-                        if (defined $c->{_commands}->{$c->argv->[0]}) {
-                            return $h->display($c->argv->[0], $c);
-                        }
-                    }
-                    
-                    return $u->template('menus/commands.tt', $c);
-                },
-                help => 'display available commands.'
-            },
-            {
-                name => 'menu',
-                code => sub {
-                    my $c = shift;
-                    my $u = Scrappy::Console::Util->new;            
-                    
-                    return $u->template('menus/master.tt', $c);
-                },
-                help => 'display main menu.'            
-            },
-        ];
+
+    # Load commands
     
-    $c->register( $_->{name}, $_->{code}, $_->{help} ) foreach @{$m};
-        
-    # register make commands
-    #foreach my $cmd ( @{Scrappy::Console::Make->new($c)->{commands}} ) {
-    #    my $n = $c->register($cmd->{name}, $cmd->{code}, $cmd->{help});
-    #    $c->{_commands}->{$n}->{args} = $cmd->{args};
-    #}
+    my $support = Scrappy::Console::Support->new;
+    foreach my $plugin ( $support->plugins ) {
+        foreach my $cmd ( @{$plugin->new($c)->{commands}} ) {
+            my $n = $c->register($cmd->{name}, $cmd->{code}, $cmd->{help});
+            $c->{_commands}->{$n}->{args} = $cmd->{args};
+        }
+    }
     
-    # register data commands
-    #foreach my $cmd ( @{Scrappy::Console::Data->new($c)->{commands}} ) {
-    #    my $n = $c->register($cmd->{name}, $cmd->{code}, $cmd->{help});
-    #    $c->{_commands}->{$n}->{args} = $cmd->{args};
-    #}
+    # Error handling
     
-    # register toolbox commands
-    #foreach my $cmd ( @{Scrappy::Console::Tool->new($c)->{commands}} ) {
-    #    my $n = $c->register($cmd->{name}, $cmd->{code}, $cmd->{help});
-    #    $c->{_commands}->{$n}->{args} = $cmd->{args};
-    #}
-    
-    # register MVC commands
-    #foreach my $cmd ( @{Scrappy::Console::Mvc->new($c)->{commands}} ) {
-    #    my $n = $c->register($cmd->{name}, $cmd->{code}, $cmd->{help});
-    #    $c->{_commands}->{$n}->{args} = $cmd->{args};
-    #}
-        
     $c->{'_functions'}->{'invalid'} = sub {
         my $c = shift;
         my $u = Scrappy::Console::Util->new;            
         return $u->template('misc/error_string.tt', $c);
     };
+    
 }
 
-1; 
+1;
 
 __DATA__
 
